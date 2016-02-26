@@ -1,8 +1,8 @@
 # Matthias Haeni
 # August 12, 2015
 
-library("curl")
-library("jsonlite")
+suppressMessages(library("curl"))
+suppressMessages(library("jsonlite"))
 
 radcalc <- function(df,lat,lon) {
   phi <- lat*pi/180

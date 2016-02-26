@@ -20,7 +20,7 @@ radcalc <- function(df,lat,lon) {
     key <- readLines("googleAPIkey.txt",n=1,warn=FALSE)
   }
   url <- paste0("https://maps.googleapis.com/maps/api/timezone/json?location=",
-                lat,",",lon,"&ts=",io,"&language=en&key=",key)
+                lat,",",lon,"&timestamp=",io,"&language=en&key=",key)
   tiz <- fromJSON(url); tiz
   
   tt <- tiz$rawOffset/60/60-tiz$dstOffset/60/60

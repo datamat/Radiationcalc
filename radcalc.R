@@ -1,9 +1,10 @@
 # Matthias Haeni
 # August 12, 2015
 
+suppressMessages(library(curl))
+suppressMessages(library(jsonlite))
+
 radcalc <- function(df,lat,lon) {
-  library(curl)
-  library(jsonlite)
   phi <- lat*pi/180
   lambda_e <- lon*pi/180
   S <- 1368

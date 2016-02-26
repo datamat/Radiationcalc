@@ -2,7 +2,7 @@
 # August 12, 2015
 
 suppressMessages(library("curl"))
-suppressMessages(library("jsonlite"))
+suppressMesages(library("jsonlite"))
 
 radcalc <- function(df,lat,lon) {
   phi <- lat*pi/180
@@ -12,7 +12,7 @@ radcalc <- function(df,lat,lon) {
   d_r <- 173
   d_y <- 365.25
   
-  time <- df$ts[1]
+  time <- df$timestamp[1]
   io <- as.numeric(time)
   if(file.exists("../googleAPIkey.txt")) {
     key <- readLines("../googleAPIkey.txt",n=1,warn=FALSE)  
@@ -24,7 +24,7 @@ radcalc <- function(df,lat,lon) {
   tiz <- fromJSON(url); tiz
   
   tt <- tiz$rawOffset/60/60-tiz$dstOffset/60/60
-  df$tsUTC <- as.POSIXlt(df$ts+tt*3600,tz="UTC")
+  df$tsUTC <- as.POSIXlt(df$timestamp+tt*3600,tz="UTC")
   head(df)
   d <- df$tsUTC$yday+1
   tsUTC <- df$tsUTC$hour+df$tsUTC$min/60
@@ -33,14 +33,14 @@ radcalc <- function(df,lat,lon) {
   sin_Psi[sin_Psi<0] <- 0
   df$K <- S*sin_Psi
   
-  df <- df[,c("ts","K")]
-  df$day <- format(df$ts,"%Y-%j")
+  df <- df[,c("timestamp","K")]
+  df$day <- format(df$timestamp,"%Y-%j")
   bar <- aggregate(df,by=list(df$day),max,na.rm=TRUE)
-  bar$ts <- as.POSIXct(strptime(bar$day,"%Y-%j"),tz="UTC")
-  bar <- bar[,c("ts","K")]
+  bar$timestamp <- as.POSIXct(strptime(bar$day,"%Y-%j"),tz="UTC")
+  bar <- bar[,c("timestamp","K")]
   names(bar)[2] <- "Kmax"
   foo <- merge(df,bar,all=TRUE)
   
-  df <- foo[,c("ts","K","Kmax")]
+  df <- foo[,c("timestamp","K","Kmax")]
   return(df)
 }

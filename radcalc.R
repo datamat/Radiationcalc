@@ -21,7 +21,7 @@ radcalc <- function(df,lat,lon) {
   }
   url <- paste0("https://maps.googleapis.com/maps/api/timezone/json?location=",
                 lat,",",lon,"&timestamp=",io,"&language=en&key=",key)
-  tiz <- fromJSON(url); tiz
+  tiz <- jsonlite::fromJSON(url); tiz
   
   tt <- tiz$rawOffset/60/60-tiz$dstOffset/60/60
   df$tsUTC <- as.POSIXlt(df$ts+tt*3600,tz="UTC")

@@ -17,7 +17,11 @@ radcalc <- function(df,lat,lon) {
   if(file.exists("../googleAPIkey.txt")) {
     key <- readLines("../googleAPIkey.txt",n=1,warn=FALSE)  
   } else {
-    key <- readLines("googleAPIkey.txt",n=1,warn=FALSE)
+    if(file.exists("googleAPIkey.txt")) {
+      key <- readLines("googleAPIkey.txt",n=1,warn=FALSE)  
+    } else {
+      key <- readLines("archive/googleAPIkey.txt",n=1,warn=FALSE)
+    }
   }
   url <- paste0("https://maps.googleapis.com/maps/api/timezone/json?location=",
                 lat,",",lon,"&timestamp=",io,"&language=en&key=",key)
